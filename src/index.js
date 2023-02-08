@@ -129,7 +129,7 @@ updateForm.addEventListener('submit', (e) => {
 
 function patchRequest(newRating, id) {
     fetch(`http://localhost:3000/ramens/${id}`, {
-        method: 'Patch',
+        method: 'PATCH',
         headers: {
             "Accepts": "application/json",
             "Content-Type": "application/json"
