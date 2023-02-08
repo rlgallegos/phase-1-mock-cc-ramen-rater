@@ -1,5 +1,7 @@
 // write your code here
 ramenMenu = document.getElementById('ramen-menu');
+ramenList = [];
+const dropdownList = document.getElementById('select-dropdown')
 
 fetch("http://localhost:3000/ramens")
     .then(res => res.json())
@@ -8,6 +10,19 @@ fetch("http://localhost:3000/ramens")
         data.forEach(ramen => {
         appendRamen(ramen)
         })
+    }).then(() => {
+
+    //Populate Dropdown form
+    console.log(ramenList[0])
+    ramenList.forEach(ramen => {
+    console.log(ramen)
+    
+    const singleOption = document.createElement('option')
+    singleOption.innerText = ramen
+    singleOption.value = ramen
+    dropdownList.appendChild(singleOption)
+
+})
     })
 
 //append single image
@@ -15,10 +30,12 @@ function appendRamen(ramen) {
     const ramenImg = document.createElement('img')
     ramenImg.src = ramen.image
 
+    //populate ramen list
+    ramenList.push(ramen.name)
+
     addImgEL(ramenImg, ramen);
 
     ramenMenu.appendChild(ramenImg);
-    console.log('successful appending')
 }
 
 //E.L. Functions
@@ -70,14 +87,6 @@ newRamenForm.addEventListener('submit', (e) => {
         rating: newRating,
         comment: newComment
     }
-
-    console.log(newRamenObj)
-
-    // console.log(newName)
-    // console.log(newRestaurant)
-    // console.log(newImg)
-    // console.log(newRating)
-    // console.log(newComment)
     postNewData(newRamenObj)
 })
 
@@ -96,3 +105,37 @@ function postNewData(newRamenObj) {
         appendRamen(data)
     })
 } 
+
+
+//PATCH / DELETE Event Listeners
+updateForm = document.getElementById('update-form')
+
+updateForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    //get values
+    const choice = dropdownList.value
+    console.log(choice)
+
+    newRating = document.getElementById('new-rating').value
+
+    let choiceId = ramenList.indexOf(choice)
+    console.log(choiceId)
+
+    //construct thing
+
+    patchRequest(newRating, choiceId)
+})
+
+function patchRequest(newRating, id) {
+    fetch(`http://localhost:3000/ramens/${id}`, {
+        method: 'Patch',
+        headers: {
+            "Accepts": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            rating: newRating
+        })
+    })
+}
