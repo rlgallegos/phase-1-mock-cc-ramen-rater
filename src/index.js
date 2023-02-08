@@ -39,10 +39,14 @@ function renderRamenDetails(ramen) {
     const name = document.getElementsByClassName('name')[0]
     const detailImg = document.getElementsByClassName('detail-image')[0]
     const restaurant = document.getElementsByClassName('restaurant')[0]
+    const rating = document.getElementById('rating-display')
+    const comment = document.getElementById('comment-display')
 
     name.textContent = ramen.name
     detailImg.src = ramen.image
     restaurant.textContent = ramen.restaurant
+    rating.textContent = ramen.rating
+    comment.textContent = ramen.comment
 }
 
 //FORM
